@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">Vigilantes Urbanos</string>
+    <string name="topbarlogin">Login</string>
+    <string name="cpf">CPF</string>
+    <string name="senha">Senha</string>
+    <string name="vigilante">Vigilante</string>
+    <string name="oap">OAP</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="cadastrar">Cadastra-se</string>
+    <string name="cadastrardadospessoais">Cadastro Vigilante - Dados Pessoais</string>
+    <string-array name="opçoesSexo">
+        <item>Sexo*</item>
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
+    <string name="nome">Nome Completo*</string>
+    <string name="telefone">Telefone*</string>
+    <string name="email">E-mail*</string>
+    <string name="RG">RG*</string>
+    <string name="nacionalidade">Nacionalidade*</string>
+    <string name="cep">CEP*</string>
+    <string name="endereco">Endereço*</string>
+    <string name="numero">Número*</string>
+    <string name="bairro">Bairro*</string>
+    <string name="uf">UF*</string>
+    <string name="cidade">Cidade*</string>
+    <string name="complemento">Complemento*</string>
+    <string name="cpf2">CPF*</string>
+    <string name="senha2">Senha*</string>
+    <string name="confirmarsenha">Confirmar Senha*</string>
+    <string name="continuar">CONTINUAR</string>
+    <string name="cadastrardadosbancarios">Cadastro Vigilante - Dados Bancários</string>
+    <string name="banco">Banco*</string>
+    <string name="agencia">Agência*</string>
+    <string name="contacorrente">Conta Corrente*</string>
+    <string name="numerocartao">Número do Cartão*</string>
+    <string name="datadevencimento">Data de vencimento*</string>
+    <string name="codigo1">Código CVV2*</string>
+    <string name="cadastrar2">CADASTRAR</string>
+    <string name="cadastrooap">Cadastro OAP</string>
+
 </resources>
