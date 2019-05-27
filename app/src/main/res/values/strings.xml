@@ -38,5 +38,24 @@
     <string name="codigo1">Código CVV2*</string>
     <string name="cadastrar2">CADASTRAR</string>
     <string name="cadastrooap">Cadastro OAP</string>
-
+    <string name="inicialvigilante">Incidentes Vigilante</string>
+    <string name="beneficiosinicial">Benefícios adquiridos:</string>
+    <string name="datainicial">Data do Envio:</string>
+    <string name="localinicial">Local:</string>
+    <string name="tipoinicial">Tipo:</string>
+    <string name="descricaoinicial">Descrição:</string>
+    <string name="comentarioOapinicial">Comentário OAP:</string>
+    <string name="inicialoap">Incidentes OAP</string>
+    <string name="recebidosoapinicial">Incidentes recebidos</string>
+    <string name="avaliarincidente">AVALIAR INCIDENTE</string>
+    <string name="novotipo">NOVO TIPO</string>
+    <string name="fechar">FECHAR</string>
+    <string name="telabeneficios">Benefícios</string>
+    <string name="dinheiro">Dinheiro:</string>
+    <string name="vigicoin">VigiCoin:</string>
+    <string name="porcentagem">Porcentagem obtida no desconto</string>
+    <string name="imposto">Tipo de Imposto</string>
+    <string name="desconto">Desconto obtido</string>
+    <string name="depositar">DEPOSITAR DINHEIRO</string>
+    <string name="depositarvigicoin">DEPOSITAR VIGICOIN</string>
 </resources>
