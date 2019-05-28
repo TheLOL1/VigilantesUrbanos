@@ -1,13 +1,164 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class Login extends AppCompatActivity {
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        TextView textView = findViewById(R.id.textView2);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                irParaTelaCadastro();
+            }
+        });
     }
+    @Override
+    protected void onResume ()
+    {
+        super.onResume();
+        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+        int aberta = sharedPreferences.getInt("Vigilante aberta",0);
+        if (aberta == 1)
+        {
+            Intent intent = new Intent(this,TelaInicialVigilante.class);
+            finish();
+            startActivity(intent);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+        }
+        else if (aberta == 2)
+        {
+            Intent intent = new Intent(this,TelaInicialOAP.class);
+            finish();
+            startActivity(intent);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+        }
+    }
+
+
+    public void logar (View view)
+    {
+        firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+        EditText editText = findViewById(R.id.editText);
+        EditText editText1 = findViewById(R.id.editText2);
+        String cpf = editText.getText().toString();
+        String senha = editText1.getText().toString();
+        RadioGroup radioGroup = findViewById(R.id.radiogroup);
+        RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        final Intent intent = new Intent(this,TelaInicialVigilante.class);
+        final Intent intent1 = new Intent(this,TelaInicialOAP.class);
+        if (radioButton != null) {
+            final String tipo = radioButton.getText().toString();
+            if (cpf.equals("") || senha.equals("") || tipo.equals("")) {
+                Toast.makeText(this, "CPF ou senha não preenchido", Toast.LENGTH_LONG).show();
+            } else if (estaconectado()) {
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.show();
+                OnCompleteListener onCompleteListener = new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            if (tipo.equals("Vigilante")) {
+                                progressDialog.dismiss();
+                                finish();
+                                SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("Vigilante aberta",1);
+                                editor.commit();
+                                startActivity(intent);
+                            } else {
+                                progressDialog.dismiss();
+                                finish();
+                                SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putInt("OAP aberta",2);
+                                editor.commit();
+                                startActivity(intent1);
+                            }
+                        } else {
+                            String erro;
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthInvalidUserException e) {
+                                erro = getString(R.string.emailincorreto);
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                erro = getString(R.string.senhaincorreta);
+                            } catch (Exception e) {
+                                erro = getString(R.string.errologar);
+                                e.printStackTrace();
+                            }
+                            progressDialog.dismiss();
+                            Toast.makeText(Login.this, erro, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                };
+                firebaseAuth.signInWithEmailAndPassword(cpf, senha).addOnCompleteListener(onCompleteListener);
+            } else {
+                Toast.makeText(this, "Erro de conexão!", Toast.LENGTH_LONG).show();
+            }
+        }
+        else
+        {
+            Toast.makeText(this,"Tipo não selecionado!",Toast.LENGTH_LONG).show();
+        }
+    }//end logar(View view)
+
+    public void irParaTelaCadastro()
+    {
+        RadioGroup radioGroup = findViewById(R.id.radiogroup);
+        RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId());
+        if (radioButton != null) {
+            String tipo = radioButton.getText().toString();
+            if (tipo.equals("Vigilante")) {
+                Intent intent = new Intent(this, CadastroVigilanteParte1.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(this,CadastroOAP.class);
+                startActivity(intent);
+            }
+        }
+        else
+        {
+            Toast.makeText(this,"Selecione o tipo de conta que deseja cadastrar!",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public boolean estaconectado()
+    {
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnectedOrConnecting());
+    }//end estaconectado()
 }

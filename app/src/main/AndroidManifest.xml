@@ -16,6 +16,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CadastroVigilanteParte1" android:parentActivityName=".Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Login">
+            </meta-data>
+        </activity>
+        <activity android:name=".TelaInicialOAP">
+        </activity>
+        <activity android:name=".TelaInicialVigilante">
+        </activity>
+        <activity android:name=".CadastroOAP" android:parentActivityName=".Login">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Login">
+            </meta-data>>
+        </activity>
     </application>
 
 </manifest>

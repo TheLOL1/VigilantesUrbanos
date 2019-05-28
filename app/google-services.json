@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "869716966625",
+    "firebase_url": "https://vigilantesurbanos-913f6.firebaseio.com",
+    "project_id": "vigilantesurbanos-913f6",
+    "storage_bucket": "vigilantesurbanos-913f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869716966625:android:671516af7dffea8c",
+        "android_client_info": {
+          "package_name": "com.example.gabriel.vigilantesurbanos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "869716966625-pdcqkk7oqc0dao4120ismd9360g59o3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGktdnn0Gp6qM1fXWMxkv3T3YiTzcs8OU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "869716966625-pdcqkk7oqc0dao4120ismd9360g59o3n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

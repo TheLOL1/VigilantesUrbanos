@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Vigilantes Urbanos</string>
     <string name="topbarlogin">Login</string>
-    <string name="cpf">CPF</string>
+    <string name="emaillogin">E-mail</string>
     <string name="senha">Senha</string>
     <string name="vigilante">Vigilante</string>
     <string name="oap">OAP</string>
@@ -58,4 +58,7 @@
     <string name="desconto">Desconto obtido</string>
     <string name="depositar">DEPOSITAR DINHEIRO</string>
     <string name="depositarvigicoin">DEPOSITAR VIGICOIN</string>
+    <string name="emailincorreto">Não há nenhuma conta cadastrada com este e-mail!</string>
+    <string name="senhaincorreta">Senha incorreta!</string>
+    <string name="errologar">Erro ao logar tente novamente!</string>
 </resources>
