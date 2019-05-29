@@ -10,6 +10,14 @@ public class Vigilante extends Usuarios {
     private String RG;
     private char sexo;
     private String nacionalidade;
+    private String IDDadosBancarios;
+    private String cep;
+    private String endereco;
+    private String numero;
+    private String bairro;
+    private String uf;
+    private String cidade;
+    private String complemento;
 
     /**
      * Construtor com parametros
@@ -23,7 +31,7 @@ public class Vigilante extends Usuarios {
      * @param sexo do vigilante
      * @param nacionalidade do vigilante
      */
-    public Vigilante (String id, String cpf, String senha, String nome, String telefone, String email, String rg, char sexo, String nacionalidade)
+    public Vigilante (String id, String cpf, String senha, String nome, String telefone, String email, String rg, char sexo, String nacionalidade, String iddadosbancarios,String cep, String endereco, String numero, String bairro, String uf, String cidade, String complemento)
     {
         super(id,'V',cpf,senha);
         this.nomecompleto = nome;
@@ -32,7 +40,43 @@ public class Vigilante extends Usuarios {
         this.RG = rg;
         this.sexo = sexo;
         this.nacionalidade = nacionalidade;
+        this.IDDadosBancarios = iddadosbancarios;
+        this.cep = cep;
+        this.endereco = endereco;
+        this.numero = numero;
+        this.bairro = bairro;
+        this.uf = uf;
+        this.cidade = cidade;
+        this.complemento = complemento;
     }//end Construtor com parametros
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public String getUf() {
+        return uf;
+    }
 
     /**
      * Metodo que retorna o sexo de um Vigilante.
@@ -42,6 +86,15 @@ public class Vigilante extends Usuarios {
     public char getSexo() {
         return sexo;
     }//end getSexo()
+
+    /**
+     * Metodo que retorna o id correspondente de uma instancia de dados bancarios.
+     * @return String IDDadosBancarios
+     */
+
+    public String getIDDadosBancarios() {
+        return IDDadosBancarios;
+    }
 
     /**
      * Metodo que retorna o email de um Vigilante.
@@ -143,12 +196,21 @@ public class Vigilante extends Usuarios {
     }
 
     /**
+     * Metodo que seta uma referencia a uma instancia de dados bancarios.
+     * @param IDDadosBancarios valor a ser atribuido
+     */
+
+    public void setIDDadosBancarios(String IDDadosBancarios) {
+        this.IDDadosBancarios = IDDadosBancarios;
+    }
+
+    /**
      * Metodo que salva um Vigilante no banco de dados.
      */
 
     public void inserir()
     {
         DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
-        databaseReference.child("usuarios").child(getID()).setValue(this);
+        databaseReference.child("usuarios").child("vigilante").child(getID()).setValue(this);
     }//end inserir()
 }//end Vigilante

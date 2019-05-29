@@ -12,7 +12,6 @@
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -30,8 +29,19 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Login">
-            </meta-data>>
+            </meta-data>
+        </activity>
+        <activity android:name=".CadastroVigilanteParte2" android:parentActivityName=".CadastroVigilanteParte1">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CadastroVigilanteParte1">
+            </meta-data>
+        </activity>
+        <activity android:name=".CadastroVigilanteParte3" android:parentActivityName=".CadastroVigilanteParte2">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CadastroVigilanteParte2">
+            </meta-data>
         </activity>
     </application>
-
 </manifest>

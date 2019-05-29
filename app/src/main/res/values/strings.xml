@@ -8,11 +8,6 @@
     <string name="entrar">ENTRAR</string>
     <string name="cadastrar">Cadastra-se</string>
     <string name="cadastrardadospessoais">Cadastro Vigilante - Dados Pessoais</string>
-    <string-array name="opçoesSexo">
-        <item>Sexo*</item>
-        <item>Masculino</item>
-        <item>Feminino</item>
-    </string-array>
     <string name="nome">Nome Completo*</string>
     <string name="telefone">Telefone*</string>
     <string name="email">E-mail*</string>
