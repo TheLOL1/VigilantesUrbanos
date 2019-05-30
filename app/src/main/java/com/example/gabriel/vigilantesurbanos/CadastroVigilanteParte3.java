@@ -7,6 +7,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Base64;
+
 public class CadastroVigilanteParte3 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,9 @@ public class CadastroVigilanteParte3 extends AppCompatActivity {
         }
         else
         {
-
+            String iddadosbancarios="";
+            DadosBancarios dadosBancarios = new DadosBancarios(iddadosbancarios,banco,agencia,conta,numerocartao,data,cvv);
+            FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
         }
     }
 }

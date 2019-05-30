@@ -2,6 +2,8 @@ package com.example.gabriel.vigilantesurbanos;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.util.ArrayList;
+
 public class Vigilante extends Usuarios {
     //atributos
     private String nomecompleto;
@@ -18,6 +20,8 @@ public class Vigilante extends Usuarios {
     private String uf;
     private String cidade;
     private String complemento;
+    private String IDBeneficios;
+    private ArrayList<String> incidentes;
 
     /**
      * Construtor com parametros
@@ -31,7 +35,7 @@ public class Vigilante extends Usuarios {
      * @param sexo do vigilante
      * @param nacionalidade do vigilante
      */
-    public Vigilante (String id, String cpf, String senha, String nome, String telefone, String email, String rg, char sexo, String nacionalidade, String iddadosbancarios,String cep, String endereco, String numero, String bairro, String uf, String cidade, String complemento)
+    public Vigilante (String idbeneficios, String id, String cpf, String senha, String nome, String telefone, String email, String rg, char sexo, String nacionalidade, String iddadosbancarios,String cep, String endereco, String numero, String bairro, String uf, String cidade, String complemento)
     {
         super(id,'V',cpf,senha);
         this.nomecompleto = nome;
@@ -48,7 +52,25 @@ public class Vigilante extends Usuarios {
         this.uf = uf;
         this.cidade = cidade;
         this.complemento = complemento;
+        this.IDBeneficios = idbeneficios;
+        this.incidentes = new ArrayList<>(0);
     }//end Construtor com parametros
+
+    public ArrayList<String> getIncidentes() {
+        return incidentes;
+    }
+
+    public String getIDBeneficios() {
+        return IDBeneficios;
+    }
+
+    public void setIDBeneficios(String IDBeneficios) {
+        this.IDBeneficios = IDBeneficios;
+    }
+
+    public void setIncidentes(String idincidente) {
+        this.incidentes.add(idincidente);
+    }
 
     public String getBairro() {
         return bairro;

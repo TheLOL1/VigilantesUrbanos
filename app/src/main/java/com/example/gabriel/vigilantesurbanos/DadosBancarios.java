@@ -1,6 +1,7 @@
 package com.example.gabriel.vigilantesurbanos;
 
 public class DadosBancarios {
+    private String id;
     private String banco;
     private String agencia;
     private String contacorrente;
@@ -18,7 +19,7 @@ public class DadosBancarios {
      * @param codigo a ser atribuido
      */
 
-    public DadosBancarios (String banco, String agencia, String contacorrente, String numerocartao, String datadevencimento, String codigo)
+    public DadosBancarios (String id, String banco, String agencia, String contacorrente, String numerocartao, String datadevencimento, String codigo)
     {
         this.banco = banco;
         this.agencia = agencia;
@@ -26,7 +27,16 @@ public class DadosBancarios {
         this.numerocartao = numerocartao;
         this.datadevencimento = datadevencimento;
         this.codigo = codigo;
+        this.id = id;
     }//end Construtor com parametros
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     /**
      * Metodo que retorna uma string com os valores dos atributos da instancia de DadosBancarios.
