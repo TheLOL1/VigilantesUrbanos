@@ -1,5 +1,7 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import com.google.firebase.database.DatabaseReference;
+
 public class DadosBancarios {
     private String id;
     private String banco;
@@ -29,6 +31,11 @@ public class DadosBancarios {
         this.codigo = codigo;
         this.id = id;
     }//end Construtor com parametros
+
+    public DadosBancarios ()
+    {
+
+    }
 
     public String getId() {
         return id;
@@ -155,4 +162,14 @@ public class DadosBancarios {
     public void setNumerocartao(String numerocartao) {
         this.numerocartao = numerocartao;
     }//end setNumeroCartao(String numerocartao)
+
+    /**
+     * Metodo que salva os dados bancarios no banco de dados.
+     */
+
+    public void inserir()
+    {
+        DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+        databaseReference.child("dados bancarios").child(getId()).setValue(this);
+    }//end inserir()
 }//end DadosBancarios

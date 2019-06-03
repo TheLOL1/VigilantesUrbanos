@@ -25,23 +25,30 @@
         </activity>
         <activity android:name=".TelaInicialVigilante">
         </activity>
-        <activity android:name=".CadastroOAP" android:parentActivityName=".Login">
+        <activity android:name=".CadastroOAP" android:parentActivityName=".Login" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Login">
             </meta-data>
         </activity>
-        <activity android:name=".CadastroVigilanteParte2" android:parentActivityName=".CadastroVigilanteParte1">
+        <activity android:name=".CadastroVigilanteParte2" android:parentActivityName=".CadastroVigilanteParte1" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroVigilanteParte1">
             </meta-data>
         </activity>
-        <activity android:name=".CadastroVigilanteParte3" android:parentActivityName=".CadastroVigilanteParte2">
+        <activity android:name=".CadastroVigilanteParte3" android:parentActivityName=".CadastroVigilanteParte2" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CadastroVigilanteParte2">
             </meta-data>
         </activity>
+        <activity android:name=".TelaBeneficios" android:parentActivityName=".TelaInicialVigilante">
+            <meta-data
+                android:name="android.support.PARENTT_ACTIVITY"
+                android:value=".TelaInicialVigilante">
+            </meta-data>
+        </activity>
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 </manifest>

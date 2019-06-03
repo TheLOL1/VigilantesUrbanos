@@ -2,15 +2,13 @@ package com.example.gabriel.vigilantesurbanos;
 
 import com.google.firebase.database.DatabaseReference;
 
-import java.util.ArrayList;
-
 public class Vigilante extends Usuarios {
     //atributos
     private String nomecompleto;
     private String telefone;
     private String email;
     private String RG;
-    private char sexo;
+    private String sexo;
     private String nacionalidade;
     private String IDDadosBancarios;
     private String cep;
@@ -21,7 +19,6 @@ public class Vigilante extends Usuarios {
     private String cidade;
     private String complemento;
     private String IDBeneficios;
-    private ArrayList<String> incidentes;
 
     /**
      * Construtor com parametros
@@ -35,9 +32,9 @@ public class Vigilante extends Usuarios {
      * @param sexo do vigilante
      * @param nacionalidade do vigilante
      */
-    public Vigilante (String idbeneficios, String id, String cpf, String senha, String nome, String telefone, String email, String rg, char sexo, String nacionalidade, String iddadosbancarios,String cep, String endereco, String numero, String bairro, String uf, String cidade, String complemento)
+    public Vigilante (String idbeneficios, String id, String cpf, String senha, String nome, String telefone, String email, String rg, String sexo, String nacionalidade, String iddadosbancarios,String cep, String endereco, String numero, String bairro, String uf, String cidade, String complemento)
     {
-        super(id,'V',cpf,senha);
+        super(id,"Vigilante",cpf,senha);
         this.nomecompleto = nome;
         this.telefone = telefone;
         this.email = email;
@@ -53,12 +50,13 @@ public class Vigilante extends Usuarios {
         this.cidade = cidade;
         this.complemento = complemento;
         this.IDBeneficios = idbeneficios;
-        this.incidentes = new ArrayList<>(0);
     }//end Construtor com parametros
 
-    public ArrayList<String> getIncidentes() {
-        return incidentes;
+    public Vigilante ( )
+    {
+
     }
+
 
     public String getIDBeneficios() {
         return IDBeneficios;
@@ -66,10 +64,6 @@ public class Vigilante extends Usuarios {
 
     public void setIDBeneficios(String IDBeneficios) {
         this.IDBeneficios = IDBeneficios;
-    }
-
-    public void setIncidentes(String idincidente) {
-        this.incidentes.add(idincidente);
     }
 
     public String getBairro() {
@@ -105,7 +99,7 @@ public class Vigilante extends Usuarios {
      * @return char sexo
      */
 
-    public char getSexo() {
+    public String getSexo() {
         return sexo;
     }//end getSexo()
 
@@ -204,7 +198,7 @@ public class Vigilante extends Usuarios {
      * @param sexo valor a ser atribuido
      */
 
-    public void setSexo(char sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }//end setSexo(char sexo)
 
@@ -235,4 +229,9 @@ public class Vigilante extends Usuarios {
         DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
         databaseReference.child("usuarios").child("vigilante").child(getID()).setValue(this);
     }//end inserir()
+
+    public String toString ()
+    {
+        return (getIDBeneficios() + " " + getID() + " " + getCPF() + " " + getSenha() + " " + getNomecompleto() + " " + getTelefone() + " " + getEmail() + " " + getRG() + " " + getSexo() + " " + getNacionalidade() + " " + getIDDadosBancarios() + " " + getCep() + " " + getEndereco() + " " + getNumero() + " " + getBairro() + " " + getUf() + " " + getCidade() + " " + getComplemento());
+    }
 }//end Vigilante

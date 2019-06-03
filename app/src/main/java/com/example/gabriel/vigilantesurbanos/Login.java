@@ -1,17 +1,17 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,14 +23,19 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Base64;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
+    public static Activity fecharlogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        fecharlogin = this;
         TextView textView = findViewById(R.id.textView2);
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,35 +44,23 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
     @Override
-    protected void onResume ()
-    {
+    protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-        int aberta = sharedPreferences.getInt("Vigilante aberta",0);
-        if (aberta == 1)
+        firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser != null)
         {
-            Intent intent = new Intent(this,TelaInicialVigilante.class);
-            finish();
-            startActivity(intent);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.commit();
-        }
-        else if (aberta == 2)
-        {
-            Intent intent = new Intent(this,TelaInicialOAP.class);
-            finish();
-            startActivity(intent);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.clear();
-            editor.commit();
+            String email = firebaseUser.getEmail();
+            String id = Base64.getEncoder().encodeToString(email.getBytes());
+            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
+            String usuario = sharedPreferences.getString(id,"");
         }
     }
 
 
-    public void logar (View view)
-    {
+    public void logar(View view) {
         firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
         EditText editText = findViewById(R.id.editText);
         EditText editText1 = findViewById(R.id.editText2);
@@ -91,18 +84,10 @@ public class Login extends AppCompatActivity {
                             if (tipo.equals("Vigilante")) {
                                 progressDialog.dismiss();
                                 finish();
-                                SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("Vigilante aberta",1);
-                                editor.commit();
                                 startActivity(intent);
                             } else {
                                 progressDialog.dismiss();
                                 finish();
-                                SharedPreferences sharedPreferences = getPreferences(Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                editor.putInt("OAP aberta",2);
-                                editor.commit();
                                 startActivity(intent1);
                             }
                         } else {
@@ -133,8 +118,7 @@ public class Login extends AppCompatActivity {
         }
     }//end logar(View view)
 
-    public void irParaTelaCadastro()
-    {
+    public void irParaTelaCadastro() {
         RadioGroup radioGroup = findViewById(R.id.radiogroup);
         RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId());
         if (radioButton != null) {
@@ -142,22 +126,17 @@ public class Login extends AppCompatActivity {
             if (tipo.equals("Vigilante")) {
                 Intent intent = new Intent(this, CadastroVigilanteParte1.class);
                 startActivity(intent);
-            }
-            else
-            {
-                Intent intent = new Intent(this,CadastroOAP.class);
+            } else {
+                Intent intent = new Intent(this, CadastroOAP.class);
                 startActivity(intent);
             }
-        }
-        else
-        {
-            Toast.makeText(this,"Selecione o tipo de conta que deseja cadastrar!",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Selecione o tipo de conta que deseja cadastrar!", Toast.LENGTH_LONG).show();
         }
     }
 
-    public boolean estaconectado()
-    {
-        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean estaconectado() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnectedOrConnecting());
     }//end estaconectado()

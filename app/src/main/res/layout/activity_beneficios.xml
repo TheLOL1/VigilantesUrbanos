@@ -133,28 +133,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="140dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="47dp"
-        android:layout_marginEnd="99dp"
-        android:backgroundTint="#6666FF"
-        android:text="@string/depositar"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toStartOf="@+id/button8"
-        app:layout_constraintTop_toBottomOf="@+id/textView25" />
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="140dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="183dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#6666FF"
-        android:text="@string/depositarvigicoin"
-        android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
 </android.support.constraint.ConstraintLayout>

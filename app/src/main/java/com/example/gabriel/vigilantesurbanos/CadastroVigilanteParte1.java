@@ -1,16 +1,14 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,10 +18,12 @@ public class CadastroVigilanteParte1 extends AppCompatActivity {
     Spinner spinner;
     String sexo;
     boolean selecionou = false;
+    public static Activity parte1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrarvigilante);
+        parte1 = this;
         spinner = findViewById(R.id.spinner2);
         List<String> list = new ArrayList<String>();
         list.add("Masculino");

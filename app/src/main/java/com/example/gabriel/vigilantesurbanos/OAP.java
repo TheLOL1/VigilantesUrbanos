@@ -5,6 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 public class OAP extends Usuarios {
     //atributos
     private String nomecompleto;
+    private String email;
 
     /**
      * Construtor com parametros.
@@ -14,11 +15,25 @@ public class OAP extends Usuarios {
      * @param nome do OAP
      */
 
-    public OAP (String id,String cpf,String senha,String nome)
+    public OAP (String id,String cpf,String senha,String nome,String email)
     {
-        super(id,'O',cpf,senha);
+        super(id,"OAP",cpf,senha);
         this.nomecompleto = nome;
+        this.email = email;
     }//end Construtor com parametros
+
+    public OAP ()
+    {
+
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
     /**
      * Metodo que seta o nome completo do OAP
@@ -47,4 +62,9 @@ public class OAP extends Usuarios {
         DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
         databaseReference.child("usuarios").child("OAP").child(getID()).setValue(this);
     }//end inserir()
+
+    public String toString ()
+    {
+        return (getID() + " " + getTipo() + " " + getCPF() + " " + getSenha() + " " + getNomecompleto() + " " + getEmail());
+    }
 }//end OAP

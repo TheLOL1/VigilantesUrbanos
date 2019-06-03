@@ -1,5 +1,6 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class CadastroVigilanteParte2 extends AppCompatActivity {
+    public static Activity parte2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastrarvigilante2);
+        parte2 = this;
     }
 
     public void continuar (View view)
@@ -24,7 +27,7 @@ public class CadastroVigilanteParte2 extends AppCompatActivity {
         String nacionalidade = intent.getStringExtra("nacionalidade");
         String cep = intent.getStringExtra("cep");
         String endereco = intent.getStringExtra("endereco");
-        char sexo = intent.getCharExtra("sexo",' ');
+        String sexo = intent.getStringExtra("sexo");
         intent.setClass(this,CadastroVigilanteParte3.class);
         EditText editText = findViewById(R.id.editText23);
         EditText editText2 = findViewById(R.id.editText24);

@@ -48,37 +48,34 @@
         android:id="@+id/button5"
         android:layout_width="140dp"
         android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="99dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="#6666FF"
+        android:onClick="AvaliarIncidente"
         android:text="@string/avaliarincidente"
         android:textColor="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button6" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="140dp"
         android:layout_height="55dp"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="#6666FF"
         android:text="@string/novotipo"
         android:textColor="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView2"
-        android:layout_width="395dp"
-        android:layout_height="468dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="392dp"
+        android:layout_height="458dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="11dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2" />
 
 </android.support.constraint.ConstraintLayout>

@@ -4,7 +4,7 @@ package com.example.gabriel.vigilantesurbanos;
 public class Usuarios {
     // atributos
     private String ID;
-    private char Tipo;
+    private String Tipo;
     private String CPF;
     private String Senha;
 
@@ -25,7 +25,7 @@ public class Usuarios {
      * @param senha define senha do usuario
      */
 
-    public Usuarios (String id, char tipo, String cpf, String senha)
+    public Usuarios (String id, String tipo, String cpf, String senha)
     {
         this.ID = id;
         this.Tipo = tipo;
@@ -38,7 +38,7 @@ public class Usuarios {
      * @return tipo do Usuarios
      */
 
-    public char getTipo() {
+    public String getTipo() {
         return Tipo;
     }//end getTipo()
 
@@ -101,7 +101,7 @@ public class Usuarios {
      * @param tipo valor a ser atribuido
      */
 
-    public void setTipo(char tipo) {
+    public void setTipo(String tipo) {
         Tipo = tipo;
     }//end setTipo(char tipo)
 

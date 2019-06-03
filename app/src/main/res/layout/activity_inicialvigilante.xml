@@ -24,14 +24,11 @@
         android:id="@+id/toolbar4"
         android:layout_width="410dp"
         android:layout_height="70dp"
-        android:layout_marginTop="14dp"
         android:background="@android:color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
             android:id="@+id/imageButton2"
@@ -48,7 +45,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/plus" />
+            android:onClick="InserirIncidente"
+            app:srcCompat="@drawable/plus"
+            tools:layout_editor_absoluteX="190dp"
+            tools:layout_editor_absoluteY="20dp" />
 
         <ImageButton
             android:id="@+id/imageButton6"
@@ -56,18 +56,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/beneficios" />
+            android:onClick="abrirBeneficios"
+            app:srcCompat="@drawable/beneficios"
+            tools:layout_editor_absoluteX="379dp"
+            tools:layout_editor_absoluteY="20dp" />
 
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="398dp"
-        android:layout_height="531dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="390dp"
+        android:layout_height="513dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="13dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 </android.support.constraint.ConstraintLayout>
