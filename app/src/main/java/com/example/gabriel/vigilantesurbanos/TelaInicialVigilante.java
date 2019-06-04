@@ -11,6 +11,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,17 +31,29 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.Base64;
+import java.util.Map;
 
 public class TelaInicialVigilante extends AppCompatActivity {
     Uri imagemvideo;
     FirebaseStorage firebaseStorage;
     StorageReference storageReference;
+    RecyclerView recyclerView;
+    AdapterVigilante adapterVigilante;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inicialvigilante);
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
+        Map<String,?> dados = sharedPreferences.getAll();
+        adapterVigilante = new AdapterVigilante(dados);
+        recyclerView.setAdapter(adapterVigilante);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
     }
 
     public void InserirIncidente (View view)
@@ -106,7 +121,7 @@ public class TelaInicialVigilante extends AppCompatActivity {
                    Incidentes incidentes = new Incidentes(id,idvigilante,"-1",tipo,localizacao,path,"false");
                    incidentes.Inserir();
                    uparImagem(incidentes.getId());
-                   SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
+                   SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
                    SharedPreferences.Editor editor = sharedPreferences.edit();
                    editor.putString(incidentes.getId(),incidentes.toString());
                    editor.apply();
