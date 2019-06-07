@@ -56,4 +56,5 @@
     <string name="emailincorreto">Não há nenhuma conta cadastrada com este e-mail!</string>
     <string name="senhaincorreta">Senha incorreta!</string>
     <string name="errologar">Erro ao logar tente novamente!</string>
+    <string name="sair">SAIR</string>
 </resources>

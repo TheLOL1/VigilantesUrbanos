@@ -26,7 +26,9 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
         dados = new ArrayList<>(0);
         for (Map.Entry<String,?> auxiliar : stringMap.entrySet())
         {
-            dados.add(auxiliar.getValue().toString());
+            Incidentes incidentes = new Incidentes();
+            incidentes.formatar(auxiliar.getValue().toString());
+            dados.add(incidentes.getLocalizacao());
         }
     }
 
@@ -40,7 +42,7 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
     @Override
     public void onBindViewHolder(ViewHolderOap viewHolderOap, final int position)
     {
-        viewHolderOap.incidente.setText(dados.get(position));
+        viewHolderOap.incidente.setText("Novo incidente da cidade de " + dados.get(position));
       if (posicaoselecionada == position)
       {
           viewHolderOap.incidente.setBackgroundColor(Color.BLUE);

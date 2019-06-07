@@ -11,8 +11,9 @@ public class Incidentes {
     private String localizacao;
     private String arquivo;
     private String notificacao;
+    private String data;
 
-    public Incidentes (String id,String idVigilante,String idOAP,String tipo,String localizacao,String arquivo,String notificacao)
+    public Incidentes (String id,String idVigilante,String idOAP,String tipo,String localizacao,String arquivo,String notificacao,String data)
     {
         this.id = id;
         this.idVigilante = idVigilante;
@@ -21,11 +22,20 @@ public class Incidentes {
         this.localizacao = localizacao;
         this.arquivo = arquivo;
         this.notificacao = notificacao;
+        this.data = data;
     }
 
     public Incidentes ()
     {
 
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
     }
 
     public String getNotificacao() {
@@ -86,7 +96,24 @@ public class Incidentes {
 
     public String toString ()
     {
-        return (getId() + " " + getArquivo() + " " + getIdOAP() + " " + getIdVigilante() + " " + getLocalizacao() + " " + getTipo());
+        return (getId() + " 1 " + getArquivo() + " 2 " + getIdOAP() + " 3 " + getIdVigilante() + " 4 " + getLocalizacao() + " 5 " + getTipo() + " 6 " + getData());
+    }
+
+    public void formatar (String s)
+    {
+        int x = s.indexOf(" 1 ");
+        setId(s.substring(0,x-1));
+        int y = s.indexOf(" 2 ");
+        setArquivo(s.substring(x+3,y-1));
+        x = s.indexOf(" 3 ");
+        setIdOAP(s.substring(y+3,x-1));
+        y = s.indexOf(" 4 ");
+        setIdVigilante(s.substring(x+3,y-1));
+        x = s.indexOf(" 5 ");
+        setLocalizacao(s.substring(y+3,x-1));
+        y = s.indexOf(" 6 ");
+        setTipo(s.substring(x+3,y-1));
+        setData(s.substring(y+3));
     }
 
     public void Inserir ()

@@ -220,6 +220,34 @@ public class Vigilante extends Usuarios {
         this.IDDadosBancarios = IDDadosBancarios;
     }
 
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
     /**
      * Metodo que salva um Vigilante no banco de dados.
      */
@@ -232,6 +260,6 @@ public class Vigilante extends Usuarios {
 
     public String toString ()
     {
-        return (getIDBeneficios() + " " + getID() + " " + getCPF() + " " + getSenha() + " " + getNomecompleto() + " " + getTelefone() + " " + getEmail() + " " + getRG() + " " + getSexo() + " " + getNacionalidade() + " " + getIDDadosBancarios() + " " + getCep() + " " + getEndereco() + " " + getNumero() + " " + getBairro() + " " + getUf() + " " + getCidade() + " " + getComplemento());
+        return (getIDBeneficios() + " 1 " + getID() + " 2 " + getCPF() + " 3 " + getSenha() + " 4 " + getNomecompleto() + " 5 " + getTelefone() + " 6 " + getEmail() + " 7 " + getRG() + " 8 " + getSexo() + " 9 " + getNacionalidade() + " 10 " + getIDDadosBancarios() + " 11 " + getCep() + " 12 " + getEndereco() + " 13 " + getNumero() + " 14 " + getBairro() + " 15 " + getUf() + " 16 " + getCidade() + " 17 " + getComplemento());
     }
 }//end Vigilante

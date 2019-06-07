@@ -30,7 +30,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 public class TelaInicialVigilante extends AppCompatActivity {
@@ -118,7 +121,9 @@ public class TelaInicialVigilante extends AppCompatActivity {
                    FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
                    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                    String idvigilante = Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes());
-                   Incidentes incidentes = new Incidentes(id,idvigilante,"-1",tipo,localizacao,path,"false");
+                   Date data = Calendar.getInstance().getTime();
+                   SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                   Incidentes incidentes = new Incidentes(id,idvigilante,"-1",tipo,localizacao,path,"false",dateFormat.format(data));
                    incidentes.Inserir();
                    uparImagem(incidentes.getId());
                    SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
@@ -177,6 +182,15 @@ public class TelaInicialVigilante extends AppCompatActivity {
     public void abrirBeneficios (View view)
     {
         Intent intent = new Intent(this,TelaBeneficios.class);
+        startActivity(intent);
+    }
+
+    public void sair (View view)
+    {
+        Intent intent = new Intent(this,Login.class);
+        FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+        firebaseAuth.signOut();
+        finish();
         startActivity(intent);
     }
 }

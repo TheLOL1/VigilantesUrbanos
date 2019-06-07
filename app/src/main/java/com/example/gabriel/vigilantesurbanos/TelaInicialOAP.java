@@ -26,6 +26,7 @@ import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -182,5 +183,14 @@ public class TelaInicialOAP extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    public void sair (View view)
+    {
+        Intent intent = new Intent(this,Login.class);
+        FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+        firebaseAuth.signOut();
+        finish();
+        startActivity(intent);
     }
 }

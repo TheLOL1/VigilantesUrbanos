@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Base64;
 
@@ -64,7 +66,7 @@ public class Login extends AppCompatActivity {
         firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
         EditText editText = findViewById(R.id.editText);
         EditText editText1 = findViewById(R.id.editText2);
-        String cpf = editText.getText().toString();
+        final String cpf = editText.getText().toString();
         String senha = editText1.getText().toString();
         RadioGroup radioGroup = findViewById(R.id.radiogroup);
         RadioButton radioButton = findViewById(radioGroup.getCheckedRadioButtonId());
@@ -82,10 +84,14 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if (tipo.equals("Vigilante")) {
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
+                                String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
                                 progressDialog.dismiss();
                                 finish();
                                 startActivity(intent);
                             } else {
+                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
+                                String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
                                 progressDialog.dismiss();
                                 finish();
                                 startActivity(intent1);
