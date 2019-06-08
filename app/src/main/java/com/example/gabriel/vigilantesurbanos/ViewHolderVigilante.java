@@ -23,7 +23,7 @@ public class ViewHolderVigilante extends RecyclerView.ViewHolder {
     public ViewHolderVigilante (View view)
     {
         super(view);
-        incidente = view.findViewById(R.id.imageView);
+        incidente = view.findViewById(R.id.imageView2);
         beneficiosadquiridos = view.findViewById(R.id.textView);
         beneficiosadquiridosvalor = view.findViewById(R.id.textView15);
         dataenvio = view.findViewById(R.id.textView6);

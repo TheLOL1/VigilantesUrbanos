@@ -65,6 +65,38 @@ public class OAP extends Usuarios {
 
     public String toString ()
     {
-        return (getID() + " " + getTipo() + " " + getCPF() + " " + getSenha() + " " + getNomecompleto() + " " + getEmail());
+        return (getID() + " 1 " + getCPF() + " 3 " + getSenha() + " 4 " + getNomecompleto() + " 5 " + getEmail() + " 18 " + getTipo());
+    }
+
+    public void formatar (String s)
+    {
+        int x = s.indexOf(" 1 ");
+        if (x != -1)
+        {
+            setID(s.substring(0,x));
+        }
+        int y = s.indexOf(" 3 ");
+        if (x != -1 && y != -1)
+        {
+           //setCPF(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 4 ");
+        if (x != -1 && y != -1)
+        {
+            //setSenha(s.substring(y+3,x));
+        }
+        y = s.indexOf(" 5 ");
+        if (x != -1 && y != -1)
+        {
+            //setNomecompleto(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 18 ");
+        if (x != -1 && y != -1)
+        {
+            //setEmail(s.substring(y+3,x));
+        }
+        if (x != -1) {
+            setTipo(s.substring(x + 4));
+        }
     }
 }//end OAP

@@ -42,6 +42,7 @@ public class TelaInicialVigilante extends AppCompatActivity {
     StorageReference storageReference;
     RecyclerView recyclerView;
     AdapterVigilante adapterVigilante;
+    boolean enviou = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class TelaInicialVigilante extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
         Map<String,?> dados = sharedPreferences.getAll();
-        adapterVigilante = new AdapterVigilante(dados);
+        adapterVigilante = new AdapterVigilante(dados,TelaInicialVigilante.this);
         recyclerView.setAdapter(adapterVigilante);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -79,6 +80,9 @@ public class TelaInicialVigilante extends AppCompatActivity {
         editText3.setHintTextColor(Color.WHITE);
         editText1.setHint("Localização*");
         editText1.setHintTextColor(Color.WHITE);
+        editText.setTextColor(Color.WHITE);
+        editText1.setTextColor(Color.WHITE);
+        editText3.setTextColor(Color.WHITE);
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.addView(toolbar);
@@ -123,14 +127,19 @@ public class TelaInicialVigilante extends AppCompatActivity {
                    String idvigilante = Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes());
                    Date data = Calendar.getInstance().getTime();
                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                   Incidentes incidentes = new Incidentes(id,idvigilante,"-1",tipo,localizacao,path,"false",dateFormat.format(data));
-                   incidentes.Inserir();
+                   Incidentes incidentes = new Incidentes(id,idvigilante,"-1",tipo,localizacao,path,"false",dateFormat.format(data),"",descricao);
                    uparImagem(incidentes.getId());
-                   SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
-                   SharedPreferences.Editor editor = sharedPreferences.edit();
-                   editor.putString(incidentes.getId(),incidentes.toString());
-                   editor.apply();
-                   imagemvideo = null;
+                   if (enviou) {
+                       incidentes.Inserir();
+                       SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes", 0);
+                       SharedPreferences.Editor editor = sharedPreferences.edit();
+                       editor.putString(incidentes.getId(), incidentes.toString());
+                       editor.apply();
+                       imagemvideo = null;
+                       adapterVigilante = new AdapterVigilante(sharedPreferences.getAll(),TelaInicialVigilante.this);
+                       recyclerView.setAdapter(adapterVigilante);
+                       enviou = false;
+                   }
                 }
             }
         });
@@ -154,28 +163,36 @@ public class TelaInicialVigilante extends AppCompatActivity {
         if (imagemvideo != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Upando...");
-            progressDialog.show();
-            StorageReference reference = storageReference.child("incidentes/" + incidente);
-            reference.putFile(imagemvideo).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast.makeText(TelaInicialVigilante.this,"Imagem ou vídeo upado com sucesso!",Toast.LENGTH_LONG).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(TelaInicialVigilante.this,"Falha ao upar!" + e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progresso = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage((int)progresso+"%" + " Upado");
-                }
-            });
+            try {
+                enviou = true;
+                progressDialog.setTitle("Upando...");
+                progressDialog.show();
+                StorageReference reference = storageReference.child("incidentes/" + incidente);
+                reference.putFile(imagemvideo).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        Toast.makeText(TelaInicialVigilante.this, "Imagem ou vídeo upado com sucesso!", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(TelaInicialVigilante.this, "Falha ao upar!" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progresso = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        progressDialog.setMessage((int) progresso + "%" + " Upado");
+                    }
+                });
+            }
+            catch (java.lang.SecurityException e)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(TelaInicialVigilante.this,"Arquivo invalido",Toast.LENGTH_LONG).show();
+            }
         }
     }
 

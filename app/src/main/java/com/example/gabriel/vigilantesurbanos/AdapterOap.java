@@ -3,6 +3,7 @@ package com.example.gabriel.vigilantesurbanos;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -10,8 +11,13 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -19,16 +25,19 @@ import java.util.Map;
 public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
     int posicaoselecionada = -1;
     ArrayList<String> dados;
+    ArrayList<String> dadosauxiliar;
     Context context;
     public AdapterOap(Map<String,?> stringMap, Context context)
     {
         this.context = context;
         dados = new ArrayList<>(0);
+        dadosauxiliar = new ArrayList<>(0);
         for (Map.Entry<String,?> auxiliar : stringMap.entrySet())
         {
             Incidentes incidentes = new Incidentes();
             incidentes.formatar(auxiliar.getValue().toString());
             dados.add(incidentes.getLocalizacao());
+            dadosauxiliar.add(auxiliar.getValue().toString());
         }
     }
 
@@ -59,20 +68,43 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   posicaoselecionada = -1;
               }
               else {
+                  FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                  Incidentes incidentes = new Incidentes();
+                  incidentes.formatar(dadosauxiliar.get(position));
+                  StorageReference storageReference = firebaseStorage.getReference().child("incidentes/"+incidentes.getId());
+                  SharedPreferences sharedPreferences = context.getSharedPreferences("Beneficios",0);
+                  Beneficios beneficios = new Beneficios();
+                  beneficios.formatar(sharedPreferences.getString(incidentes.getIdVigilante(),""));
                   posicaoselecionada = position;
                   AlertDialog.Builder alertdialog = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
                   Toolbar toolbar = new Toolbar(context);
                   toolbar.setBackgroundColor(Color.BLACK);
                   toolbar.setTitleTextColor(Color.WHITE);
                   toolbar.setTitle(dados.get(position));
+                  ImageView imageView = new ImageView(context);
+                  Glide.with(context).load(storageReference).into(imageView);
                   TextView textView = new TextView(context);
                   textView.setTextColor(Color.WHITE);
                   textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                   textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
-                  textView.setText("Beneficios adquiridos");
+                  textView.setText("Beneficios enviados");
                   TextView textView1 = new TextView(context);
                   textView1.setTextColor(Color.WHITE);
-                  textView1.setText("Teste");
+                  if (incidentes.getDinheiro().equals("true")) {
+                      textView1.setText(beneficios.getDinheiro());
+                  }
+                  else if (incidentes.getVigicoin().equals("true"))
+                  {
+                      textView1.setText(beneficios.getVigiCoin());
+                  }
+                  else if (incidentes.getDesconto().equals("true"))
+                  {
+                      textView1.setText(beneficios.getValordesconto());
+                  }
+                  else
+                  {
+                      textView1.setText("Nenhum beneficio enviado");
+                  }
                   TextView textView2 = new TextView(context);
                   textView2.setTextColor(Color.WHITE);
                   textView2.setText("Data do Envio");
@@ -80,7 +112,7 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   textView2.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                   TextView textView3 = new TextView(context);
                   textView3.setTextColor(Color.WHITE);
-                  textView3.setText("Teste2");
+                  textView3.setText(incidentes.getData());
                   TextView textView4 = new TextView(context);
                   textView4.setTextColor(Color.WHITE);
                   textView4.setText("Local");
@@ -88,7 +120,7 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   textView4.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                   TextView textView5 = new TextView(context);
                   textView5.setTextColor(Color.WHITE);
-                  textView5.setText("Teste3");
+                  textView5.setText(incidentes.getLocalizacao());
                   TextView textView6 = new TextView(context);
                   textView6.setTextColor(Color.WHITE);
                   textView6.setText("Tipo");
@@ -96,7 +128,7 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   textView6.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                   TextView textView7 = new TextView(context);
                   textView7.setTextColor(Color.WHITE);
-                  textView7.setText("Teste4");
+                  textView7.setText(incidentes.getTipo());
                   TextView textView8 = new TextView(context);
                   textView8.setTextColor(Color.WHITE);
                   textView8.setText("Descrição");
@@ -104,7 +136,7 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   textView8.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                   TextView textView9 = new TextView(context);
                   textView9.setTextColor(Color.WHITE);
-                  textView9.setText("Teste5");
+                  textView9.setText(incidentes.getDescricao());
                   TextView textView10 = new TextView(context);
                   textView10.setTextColor(Color.WHITE);
                   textView10.setText("Comentário OAP");
@@ -112,9 +144,11 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   textView10.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
                   TextView textView11 = new TextView(context);
                   textView11.setTextColor(Color.WHITE);
-                  textView11.setText("Teste6");
+                  textView11.setText(incidentes.getComentário());
                   LinearLayout linearLayout = new LinearLayout(context);
                   linearLayout.setOrientation(LinearLayout.VERTICAL);
+                  linearLayout.addView(toolbar);
+                  linearLayout.addView(imageView);
                   linearLayout.addView(textView);
                   linearLayout.addView(textView1);
                   linearLayout.addView(textView2);
@@ -128,6 +162,10 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
                   linearLayout.addView(textView10);
                   linearLayout.addView(textView11);
                   alertdialog.setCancelable(false);
+                  int largura = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,context.getResources().getDisplayMetrics());
+                  int altura = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,context.getResources().getDisplayMetrics());
+                  LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(largura,altura);
+                  linearLayout.setLayoutParams(layoutParams);
                   alertdialog.setView(linearLayout);
                   alertdialog.setNegativeButton("FECHAR", new DialogInterface.OnClickListener() {
                       @Override

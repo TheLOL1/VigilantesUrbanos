@@ -10,7 +10,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -25,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.Base64;
 
@@ -58,6 +56,20 @@ public class Login extends AppCompatActivity {
             String id = Base64.getEncoder().encodeToString(email.getBytes());
             SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
             String usuario = sharedPreferences.getString(id,"");
+            Vigilante vigilante = new Vigilante();
+            vigilante.formatar(usuario);
+            if (vigilante != null && vigilante.getTipo().equals("Vigilante"))
+            {
+                Intent intent = new Intent(this,TelaInicialVigilante.class);
+                finish();
+                startActivity(intent);
+            }
+            else if (vigilante != null && vigilante.getTipo().equals("OAP"))
+            {
+                Intent intent = new Intent(this,TelaInicialOAP.class);
+                finish();
+                startActivity(intent);
+            }
         }
     }
 
@@ -86,15 +98,35 @@ public class Login extends AppCompatActivity {
                             if (tipo.equals("Vigilante")) {
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
                                 String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
-                                progressDialog.dismiss();
-                                finish();
-                                startActivity(intent);
+                                Vigilante vigilante = new Vigilante();
+                                vigilante.formatar(usuario);
+                                if (vigilante != null && vigilante.getTipo().equals("Vigilante")) {
+                                    progressDialog.dismiss();
+                                    finish();
+                                    startActivity(intent);
+                                }
+                                else
+                                {
+                                    progressDialog.dismiss();
+                                    firebaseAuth.signOut();
+                                    Toast.makeText(Login.this,"Tipo incorreto!",Toast.LENGTH_LONG).show();
+                                }
                             } else {
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
                                 String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
-                                progressDialog.dismiss();
-                                finish();
-                                startActivity(intent1);
+                                OAP oap = new OAP();
+                                oap.formatar(usuario);
+                                if (oap != null && oap.getTipo().equals("OAP")) {
+                                    progressDialog.dismiss();
+                                    finish();
+                                    startActivity(intent1);
+                                }
+                                else
+                                {
+                                    progressDialog.dismiss();
+                                    firebaseAuth.signOut();
+                                    Toast.makeText(Login.this,"Tipo incorreto",Toast.LENGTH_LONG).show();
+                                }
                             }
                         } else {
                             String erro;

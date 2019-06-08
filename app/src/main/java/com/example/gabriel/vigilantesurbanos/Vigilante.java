@@ -260,6 +260,103 @@ public class Vigilante extends Usuarios {
 
     public String toString ()
     {
-        return (getIDBeneficios() + " 1 " + getID() + " 2 " + getCPF() + " 3 " + getSenha() + " 4 " + getNomecompleto() + " 5 " + getTelefone() + " 6 " + getEmail() + " 7 " + getRG() + " 8 " + getSexo() + " 9 " + getNacionalidade() + " 10 " + getIDDadosBancarios() + " 11 " + getCep() + " 12 " + getEndereco() + " 13 " + getNumero() + " 14 " + getBairro() + " 15 " + getUf() + " 16 " + getCidade() + " 17 " + getComplemento());
+        return (getIDBeneficios() + " 1 " + getID() + " 2 " + getCPF() + " 3 " + getSenha() + " 4 " + getNomecompleto() + " 5 " + getTelefone() + " 6 " + getEmail() + " 7 " + getRG() + " 8 " + getSexo() + " 9 " + getNacionalidade() + " 10 " + getIDDadosBancarios() + " 11 " + getCep() + " 12 " + getEndereco() + " 13 " + getNumero() + " 14 " + getBairro() + " 15 " + getUf() + " 16 " + getCidade() + " 17 " + getComplemento() + " 18 " + getTipo());
+    }
+
+    public void formatar (String s)
+    {
+        int x = s.indexOf(" 1 ");
+        if (x != -1)
+        {
+            setIDBeneficios(s.substring(0,x));
+        }
+        int y = s.indexOf(" 2 ");
+        if (x != -1 && y != -1)
+        {
+            setID(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 3 ");
+        if (x != -1 && y != -1)
+        {
+            //setCPF(s.substring(y+3,x));
+        }
+        y = s.indexOf(" 4 ");
+        if (x != -1 && y != -1)
+        {
+            //setSenha(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 5 ");
+        if (x != -1 && y != -1)
+        {
+            //setNomecompleto(s.substring(y+3,x));
+        }
+        y = s.indexOf(" 6 ");
+        if (x != -1 && y != -1)
+        {
+            //setTelefone(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 7 ");
+        if (x != -1 && y != -1)
+        {
+            //setEmail(s.substring(y+3,x));
+        }
+        y = s.indexOf(" 8 ");
+        if (x != -1 && y != -1)
+        {
+            //setRG(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 9 ");
+        if (x != -1 && y != -1)
+        {
+            //setSexo(s.substring(y+3,x));
+        }
+        y = s.indexOf(" 10 ");
+        if (x != -1 && y != -1)
+        {
+            //setNacionalidade(s.substring(x+3,y));
+        }
+        x = s.indexOf(" 11 ");
+        if (x != -1 && y != -1)
+        {
+            setIDDadosBancarios(s.substring(y+4,x));
+        }
+        y = s.indexOf(" 12 ");
+        if (x != -1 && y != -1)
+        {
+            //setCep(s.substring(x+4,y));
+        }
+        x = s.indexOf(" 13 ");
+        if (x != -1 && y != -1)
+        {
+            //setEndereco(s.substring(y+4,x));
+        }
+        y = s.indexOf(" 14 ");
+        if (x != -1 && y != -1)
+        {
+            //setNumero(s.substring(x+4,y));
+        }
+        x = s.indexOf(" 15 ");
+        if (x != -1 && y != -1)
+        {
+            //setBairro(s.substring(y+4,x));
+        }
+        y = s.indexOf(" 16 ");
+        if (x != -1 && y != -1)
+        {
+            //setUf(s.substring(x+4,y));
+        }
+        x = s.indexOf(" 17 ");
+        if (x != -1 && y != -1)
+        {
+            //setCidade(s.substring(y+4,x));
+        }
+        y = s.indexOf(" 18 ");
+        if (x != -1 && y != -1)
+        {
+            //setComplemento(s.substring(x+4,y));
+        }
+        if (y != -1) {
+            setTipo(s.substring(y + 4));
+        }
     }
 }//end Vigilante

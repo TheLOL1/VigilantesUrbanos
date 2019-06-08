@@ -27,11 +27,15 @@ import android.widget.Toolbar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 
 public class TelaInicialOAP extends AppCompatActivity {
@@ -40,6 +44,7 @@ public class TelaInicialOAP extends AppCompatActivity {
     StorageReference storageReference;
     RecyclerView recyclerView;
     AdapterOap adapterOap;
+    boolean enviou = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,81 +65,198 @@ public class TelaInicialOAP extends AppCompatActivity {
     public void AvaliarIncidente (View view)
     {
         if (adapterOap.posicaoselecionada != -1) {
-            AlertDialog.Builder alertdialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
-            Toolbar toolbar = new Toolbar(this);
-            toolbar.setTitle("Avaliar Incidente");
-            toolbar.setBackgroundColor(Color.BLACK);
-            toolbar.setTitleTextColor(Color.WHITE);
-            Button button = new Button(this);
-            button.setText("ANEXAR FOTO OU VÍDEO");
-            button.setTextColor(Color.WHITE);
-            button.setBackgroundTintList(ContextCompat.getColorStateList(TelaInicialOAP.this, R.color.butao));
-            final EditText editText = new EditText(this);
-            editText.setHint("Comentário");
-            editText.setHintTextColor(Color.WHITE);
-            TextView textView = new TextView(this);
-            textView.setText("Tipo de bonificação");
-            textView.setTextColor(Color.WHITE);
-            final RadioGroup radioGroup = new RadioGroup(this);
-            final RadioButton radioButton = new RadioButton(this);
-            RadioButton radioButton2 = new RadioButton(this);
-            RadioButton radioButton3 = new RadioButton(this);
-            radioButton.setText("Dinheiro");
-            radioButton.setTextColor(Color.WHITE);
-            radioGroup.addView(radioButton);
-            radioButton2.setText("VigiCoin");
-            radioButton2.setTextColor(Color.WHITE);
-            radioGroup.addView(radioButton2);
-            radioButton3.setTextColor(Color.WHITE);
-            radioButton3.setText("Desconto Imposto");
-            radioGroup.addView(radioButton3);
-            final EditText editText1 = new EditText(this);
-            editText1.setHint("Valor Bonificação");
-            editText1.setHintTextColor(Color.WHITE);
-            final LinearLayout linearLayout = new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            editText.setTextColor(Color.WHITE);
-            editText1.setTextColor(Color.WHITE);
-            linearLayout.addView(toolbar);
-            linearLayout.addView(button);
-            linearLayout.addView(editText);
-            linearLayout.addView(textView);
-            linearLayout.addView(radioGroup);
-            linearLayout.addView(editText1);
-            alertdialog.setView(linearLayout);
-            alertdialog.setCancelable(false);
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent galeria = new Intent(Intent.ACTION_GET_CONTENT);
-                    galeria.setType("*/*");
-                    startActivityForResult(Intent.createChooser(galeria, "Selecione imagem ou vídeo"), 50);
-                }
-            });
-            alertdialog.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    imagemvideo = null;
-                }
-            });
-            alertdialog.setPositiveButton("ENVIAR", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String comentario = editText.getText().toString();
-                    RadioButton radioButton4 = linearLayout.findViewById(radioGroup.getCheckedRadioButtonId());
-                    String tipo = "";
-                    if (radioButton4 != null) {
-                        tipo = radioButton4.getText().toString();
+            String s = adapterOap.dadosauxiliar.get(adapterOap.posicaoselecionada);
+            final Incidentes incidentes = new Incidentes();
+            incidentes.formatar(s);
+            if (incidentes != null && incidentes.getIdOAP().equals("-1")) {
+                final SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("Incidentes",0);
+                final SharedPreferences sharedPreferences1 = getApplicationContext().getSharedPreferences("Beneficios",0);
+                AlertDialog.Builder alertdialog = new AlertDialog.Builder(this, R.style.AlertDialogStyle);
+                Toolbar toolbar = new Toolbar(this);
+                toolbar.setTitle("Avaliar Incidente");
+                toolbar.setBackgroundColor(Color.BLACK);
+                toolbar.setTitleTextColor(Color.WHITE);
+                Button button = new Button(this);
+                button.setText("ANEXAR FOTO OU VÍDEO");
+                button.setTextColor(Color.WHITE);
+                button.setBackgroundTintList(ContextCompat.getColorStateList(TelaInicialOAP.this, R.color.butao));
+                final EditText editText = new EditText(this);
+                editText.setHint("Comentário");
+                editText.setHintTextColor(Color.WHITE);
+                TextView textView = new TextView(this);
+                textView.setText("Tipo de bonificação");
+                textView.setTextColor(Color.WHITE);
+                final RadioGroup radioGroup = new RadioGroup(this);
+                final RadioButton radioButton = new RadioButton(this);
+                RadioButton radioButton2 = new RadioButton(this);
+                RadioButton radioButton3 = new RadioButton(this);
+                radioButton.setText("Dinheiro");
+                radioButton.setTextColor(Color.WHITE);
+                radioGroup.addView(radioButton);
+                radioButton2.setText("VigiCoin");
+                radioButton2.setTextColor(Color.WHITE);
+                radioGroup.addView(radioButton2);
+                radioButton3.setTextColor(Color.WHITE);
+                radioButton3.setText("Desconto Imposto");
+                radioGroup.addView(radioButton3);
+                final EditText editText1 = new EditText(this);
+                editText1.setHint("Valor Bonificação");
+                editText1.setHintTextColor(Color.WHITE);
+                final EditText editText2 = new EditText(this);
+                editText2.setHint("Porcentagem desconto");
+                editText2.setHintTextColor(Color.WHITE);
+                final EditText editText3 = new EditText(this);
+                editText3.setHint("Tipo imposto");
+                editText3.setHintTextColor(Color.WHITE);
+                final LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                editText.setTextColor(Color.WHITE);
+                editText1.setTextColor(Color.WHITE);
+                editText2.setTextColor(Color.WHITE);
+                editText3.setTextColor(Color.WHITE);
+                linearLayout.addView(toolbar);
+                linearLayout.addView(button);
+                linearLayout.addView(editText);
+                linearLayout.addView(textView);
+                linearLayout.addView(radioGroup);
+                linearLayout.addView(editText1);
+                linearLayout.addView(editText2);
+                linearLayout.addView(editText3);
+                alertdialog.setView(linearLayout);
+                alertdialog.setCancelable(false);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent galeria = new Intent(Intent.ACTION_GET_CONTENT);
+                        galeria.setType("*/*");
+                        startActivityForResult(Intent.createChooser(galeria, "Selecione imagem ou vídeo"), 50);
                     }
-                    String valor = editText1.getText().toString();
-                    if (imagemvideo == null || tipo.equals("") || comentario.equals("") || valor.equals("")) {
-                        Toast.makeText(TelaInicialOAP.this, "Incidente não reportado (todos os campos são obrigatórios)", Toast.LENGTH_LONG).show();
-                    } else {
+                });
+                alertdialog.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
                         imagemvideo = null;
                     }
-                }
-            });
-            alertdialog.show();
+                });
+                alertdialog.setPositiveButton("ENVIAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String comentario = editText.getText().toString();
+                        RadioButton radioButton4 = linearLayout.findViewById(radioGroup.getCheckedRadioButtonId());
+                        String tipo = "";
+                        if (radioButton4 != null) {
+                            tipo = radioButton4.getText().toString();
+                        }
+                        String valor = editText1.getText().toString();
+                        if (imagemvideo == null || tipo.equals("") || comentario.equals("") || valor.equals("")) {
+                            Toast.makeText(TelaInicialOAP.this, "Incidente não avaliado (todos os campos são obrigatórios)", Toast.LENGTH_LONG).show();
+                        } else {
+                            if (tipo.equals("Dinheiro"))
+                            {
+                                FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                incidentes.setComentário(comentario);
+                                incidentes.setIdOAP(Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes()));
+                                incidentes.setDinheiro("true");
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(incidentes.getId(),incidentes.toString());
+                                Beneficios beneficios = new Beneficios();
+                                beneficios.formatar(sharedPreferences1.getString(incidentes.getIdVigilante(),""));
+                                beneficios.setDinheiro(valor);
+                                SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+                                editor1.putString(incidentes.getIdVigilante(),beneficios.toString());
+                                uparImagem(incidentes.getId());
+                                if (enviou) {
+                                    editor1.apply();
+                                    editor.apply();
+                                    DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put(incidentes.getId(), incidentes);
+                                    databaseReference.child("incidentes").updateChildren(map);
+                                    map = new HashMap<>();
+                                    map.put(beneficios.getIdvigilante(), beneficios);
+                                    databaseReference.child("beneficios").updateChildren(map);
+                                    imagemvideo = null;
+                                    adapterOap = new AdapterOap(sharedPreferences.getAll(), TelaInicialOAP.this);
+                                    recyclerView.setAdapter(adapterOap);
+                                    enviou = false;
+                                }
+                            }
+                            else if (tipo.equals("VigiCoin"))
+                            {
+                                FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                incidentes.setComentário(comentario);
+                                incidentes.setIdOAP(Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes()));
+                                incidentes.setVigicoin("true");
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(incidentes.getId(),incidentes.toString());
+                                Beneficios beneficios = new Beneficios();
+                                beneficios.formatar(sharedPreferences1.getString(incidentes.getIdVigilante(),""));
+                                beneficios.setVigiCoin(valor);
+                                SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+                                editor1.putString(incidentes.getIdVigilante(),beneficios.toString());
+                                uparImagem(incidentes.getId());
+                                if (enviou) {
+                                    editor.apply();
+                                    editor1.apply();
+                                    DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put(incidentes.getId(), incidentes);
+                                    databaseReference.child("incidentes").updateChildren(map);
+                                    databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+                                    map = new HashMap<>();
+                                    map.put(beneficios.getIdvigilante(), beneficios);
+                                    databaseReference.child("beneficios").updateChildren(map);
+                                    imagemvideo = null;
+                                    adapterOap = new AdapterOap(sharedPreferences.getAll(), TelaInicialOAP.this);
+                                    recyclerView.setAdapter(adapterOap);
+                                    enviou = false;
+                                }
+                            }
+                            else
+                            {
+                                FirebaseAuth firebaseAuth = ConfiguracaoBancoDeDados.getFirebaseAuth();
+                                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                incidentes.setComentário(comentario);
+                                incidentes.setIdOAP(Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes()));
+                                incidentes.setDesconto("true");
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(incidentes.getId(),incidentes.toString());
+                                Beneficios beneficios = new Beneficios();
+                                beneficios.formatar(sharedPreferences1.getString(incidentes.getIdVigilante(),""));
+                                beneficios.setValordesconto(valor);
+                                beneficios.setPorcentagemdesconto(editText2.getText().toString());
+                                beneficios.setTipoimposto(editText3.getText().toString());
+                                SharedPreferences.Editor editor1 = sharedPreferences1.edit();
+                                editor1.putString(incidentes.getIdVigilante(),beneficios.toString());
+                                uparImagem(incidentes.getId());
+                                if (enviou) {
+                                    editor.apply();
+                                    editor1.apply();
+                                    DatabaseReference databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+                                    Map<String, Object> map = new HashMap<>();
+                                    map.put(incidentes.getId(), incidentes);
+                                    databaseReference.child("incidentes").updateChildren(map);
+                                    databaseReference = ConfiguracaoBancoDeDados.getDatabaseReference();
+                                    map = new HashMap<>();
+                                    map.put(beneficios.getIdvigilante(), beneficios);
+                                    databaseReference.child("beneficios").updateChildren(map);
+                                    imagemvideo = null;
+                                    adapterOap = new AdapterOap(sharedPreferences.getAll(), TelaInicialOAP.this);
+                                    recyclerView.setAdapter(adapterOap);
+                                    enviou = false;
+                                }
+                            }
+                        }
+                    }
+                });
+                alertdialog.show();
+            }
+            else
+            {
+                Toast.makeText(TelaInicialOAP.this,"Incidente já avalido!",Toast.LENGTH_LONG).show();
+            }
         }
         else
         {
@@ -160,28 +282,36 @@ public class TelaInicialOAP extends AppCompatActivity {
         if (imagemvideo != null)
         {
             final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Upando...");
-            progressDialog.show();
-            StorageReference reference = storageReference.child("incidentes/").child("respostas/" + incidente);
-            reference.putFile(imagemvideo).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    progressDialog.dismiss();
-                    Toast.makeText(TelaInicialOAP.this,"Imagem ou vídeo upado com sucesso!",Toast.LENGTH_LONG).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    progressDialog.dismiss();
-                    Toast.makeText(TelaInicialOAP.this,"Falha ao upar!" + e.getMessage(),Toast.LENGTH_LONG).show();
-                }
-            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double progresso = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage((int)progresso+"%" + " Upado");
-                }
-            });
+            try {
+                enviou = true;
+                progressDialog.setTitle("Upando...");
+                progressDialog.show();
+                StorageReference reference = storageReference.child("incidentes/").child("respostas/" + incidente);
+                reference.putFile(imagemvideo).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        Toast.makeText(TelaInicialOAP.this, "Imagem ou vídeo upado com sucesso!", Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(TelaInicialOAP.this, "Falha ao upar!" + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progresso = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        progressDialog.setMessage((int) progresso + "%" + " Upado");
+                    }
+                });
+            }
+            catch (java.lang.SecurityException e)
+            {
+                progressDialog.dismiss();
+                Toast.makeText(TelaInicialOAP.this,"Arquivo invalido",Toast.LENGTH_LONG).show();
+            }
         }
     }
 

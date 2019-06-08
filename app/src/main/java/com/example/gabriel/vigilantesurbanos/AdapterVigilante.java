@@ -1,16 +1,24 @@
 package com.example.gabriel.vigilantesurbanos;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 public class AdapterVigilante extends RecyclerView.Adapter<ViewHolderVigilante> {
     ArrayList<String> dados;
-    public AdapterVigilante(Map<String,?> stringMap)
+    Context context;
+    public AdapterVigilante(Map<String,?> stringMap,Context context)
     {
+        this.context = context;
         dados = new ArrayList<>(0);
         for (Map.Entry<String,?> auxiliar : stringMap.entrySet())
         {
@@ -26,14 +34,36 @@ public class AdapterVigilante extends RecyclerView.Adapter<ViewHolderVigilante> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolderVigilante viewHolderVigilante, int position)
+    public void onBindViewHolder(final ViewHolderVigilante viewHolderVigilante, int position)
     {
-        viewHolderVigilante.comentarioOapvalor.setText("Teste");
-        viewHolderVigilante.descricaovalor.setText("Teste2");
-        viewHolderVigilante.tipovalor.setText("Teste3");
-        viewHolderVigilante.localvalor.setText("Teste4");
-        viewHolderVigilante.dataenviovalor.setText("Teste5");
-        viewHolderVigilante.beneficiosadquiridosvalor.setText("Teste6");
+        Incidentes incidentes = new Incidentes();
+        incidentes.formatar(dados.get(position));
+        viewHolderVigilante.comentarioOapvalor.setText(incidentes.getComentário());
+        viewHolderVigilante.descricaovalor.setText(incidentes.getDescricao());
+        viewHolderVigilante.tipovalor.setText(incidentes.getTipo());
+        viewHolderVigilante.localvalor.setText(incidentes.getLocalizacao());
+        viewHolderVigilante.dataenviovalor.setText(incidentes.getData());
+        SharedPreferences sharedPreferences = context.getSharedPreferences("Beneficios",0);
+        Beneficios beneficios = new Beneficios();
+        beneficios.formatar(sharedPreferences.getString(incidentes.getIdVigilante(),""));
+        if (incidentes.getDinheiro().equals("true")) {
+            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getDinheiro());
+        }
+        else if (incidentes.getVigicoin().equals("true"))
+        {
+            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getVigiCoin());
+        }
+        else if (incidentes.getDesconto().equals("true"))
+        {
+            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getValordesconto());
+        }
+        else
+        {
+            viewHolderVigilante.beneficiosadquiridosvalor.setText("Incidente não avalido pelo OAP!");
+        }
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = firebaseStorage.getReference().child("incidentes/" + incidentes.getId());
+        Glide.with(context).load(storageReference).into(viewHolderVigilante.incidente);
     }
 
     @Override
