@@ -275,86 +275,13 @@ public class Vigilante extends Usuarios {
         {
             setID(s.substring(x+3,y));
         }
-        x = s.indexOf(" 3 ");
-        if (x != -1 && y != -1)
-        {
-            //setCPF(s.substring(y+3,x));
-        }
-        y = s.indexOf(" 4 ");
-        if (x != -1 && y != -1)
-        {
-            //setSenha(s.substring(x+3,y));
-        }
-        x = s.indexOf(" 5 ");
-        if (x != -1 && y != -1)
-        {
-            //setNomecompleto(s.substring(y+3,x));
-        }
-        y = s.indexOf(" 6 ");
-        if (x != -1 && y != -1)
-        {
-            //setTelefone(s.substring(x+3,y));
-        }
-        x = s.indexOf(" 7 ");
-        if (x != -1 && y != -1)
-        {
-            //setEmail(s.substring(y+3,x));
-        }
-        y = s.indexOf(" 8 ");
-        if (x != -1 && y != -1)
-        {
-            //setRG(s.substring(x+3,y));
-        }
-        x = s.indexOf(" 9 ");
-        if (x != -1 && y != -1)
-        {
-            //setSexo(s.substring(y+3,x));
-        }
         y = s.indexOf(" 10 ");
-        if (x != -1 && y != -1)
-        {
-            //setNacionalidade(s.substring(x+3,y));
-        }
         x = s.indexOf(" 11 ");
         if (x != -1 && y != -1)
         {
             setIDDadosBancarios(s.substring(y+4,x));
         }
-        y = s.indexOf(" 12 ");
-        if (x != -1 && y != -1)
-        {
-            //setCep(s.substring(x+4,y));
-        }
-        x = s.indexOf(" 13 ");
-        if (x != -1 && y != -1)
-        {
-            //setEndereco(s.substring(y+4,x));
-        }
-        y = s.indexOf(" 14 ");
-        if (x != -1 && y != -1)
-        {
-            //setNumero(s.substring(x+4,y));
-        }
-        x = s.indexOf(" 15 ");
-        if (x != -1 && y != -1)
-        {
-            //setBairro(s.substring(y+4,x));
-        }
-        y = s.indexOf(" 16 ");
-        if (x != -1 && y != -1)
-        {
-            //setUf(s.substring(x+4,y));
-        }
-        x = s.indexOf(" 17 ");
-        if (x != -1 && y != -1)
-        {
-            //setCidade(s.substring(y+4,x));
-        }
         y = s.indexOf(" 18 ");
-        if (x != -1 && y != -1)
-        {
-            //setComplemento(s.substring(x+4,y));
-        }
         if (y != -1) {
             setTipo(s.substring(y + 4));
         }

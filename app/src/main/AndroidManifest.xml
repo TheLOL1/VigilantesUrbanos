@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.gabriel.vigilantesurbanos">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -9,46 +11,54 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".DadosIncidenteOAP" android:parentActivityName=".TelaInicialOAP">
+            <meta-data android:name="android.support.PARENT_ACTIVITY" android:value=".TelaInicialOAP">
+            </meta-data>
+        </activity>
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CadastroVigilanteParte1" android:parentActivityName=".Login">
+        <activity
+            android:name=".CadastroVigilanteParte1"
+            android:parentActivityName=".Login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Login">
-            </meta-data>
+                android:value=".Login"></meta-data>
         </activity>
-        <activity android:name=".TelaInicialOAP">
-        </activity>
-        <activity android:name=".TelaInicialVigilante">
-        </activity>
-        <activity android:name=".CadastroOAP" android:parentActivityName=".Login" >
+        <activity android:name=".TelaInicialOAP"></activity>
+        <activity android:name=".TelaInicialVigilante"></activity>
+        <activity
+            android:name=".CadastroOAP"
+            android:parentActivityName=".Login">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Login">
-            </meta-data>
+                android:value=".Login"></meta-data>
         </activity>
-        <activity android:name=".CadastroVigilanteParte2" android:parentActivityName=".CadastroVigilanteParte1" >
+        <activity
+            android:name=".CadastroVigilanteParte2"
+            android:parentActivityName=".CadastroVigilanteParte1">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CadastroVigilanteParte1">
-            </meta-data>
+                android:value=".CadastroVigilanteParte1"></meta-data>
         </activity>
-        <activity android:name=".CadastroVigilanteParte3" android:parentActivityName=".CadastroVigilanteParte2" >
+        <activity
+            android:name=".CadastroVigilanteParte3"
+            android:parentActivityName=".CadastroVigilanteParte2">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".CadastroVigilanteParte2">
-            </meta-data>
+                android:value=".CadastroVigilanteParte2"></meta-data>
         </activity>
-        <activity android:name=".TelaBeneficios" android:parentActivityName=".TelaInicialVigilante">
+        <activity
+            android:name=".TelaBeneficios"
+            android:parentActivityName=".TelaInicialVigilante">
             <meta-data
                 android:name="android.support.PARENTT_ACTIVITY"
-                android:value=".TelaInicialVigilante">
-            </meta-data>
+                android:value=".TelaInicialVigilante"></meta-data>
         </activity>
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 </manifest>

@@ -47,15 +47,15 @@ public class AdapterVigilante extends RecyclerView.Adapter<ViewHolderVigilante> 
         Beneficios beneficios = new Beneficios();
         beneficios.formatar(sharedPreferences.getString(incidentes.getIdVigilante(),""));
         if (incidentes.getDinheiro().equals("true")) {
-            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getDinheiro());
+            viewHolderVigilante.beneficiosadquiridosvalor.setText("R$" + beneficios.getDinheiro());
         }
         else if (incidentes.getVigicoin().equals("true"))
         {
-            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getVigiCoin());
+            viewHolderVigilante.beneficiosadquiridosvalor.setText("V$" + beneficios.getVigiCoin());
         }
         else if (incidentes.getDesconto().equals("true"))
         {
-            viewHolderVigilante.beneficiosadquiridosvalor.setText(beneficios.getValordesconto());
+            viewHolderVigilante.beneficiosadquiridosvalor.setText("R$" + beneficios.getValordesconto());
         }
         else
         {
