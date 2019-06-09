@@ -33,15 +33,15 @@ public class DadosIncidenteOAP extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("Beneficios",0);
         Beneficios beneficios = new Beneficios();
         beneficios.formatar(sharedPreferences.getString(incidentes.getIdVigilante(),""));
-        if (incidentes.getDinheiro().equals("true"))
+        if (beneficios != null && incidentes != null && incidentes.getDinheiro().equals("true"))
         {
             textView.setText("R$" + beneficios.getDinheiro());
         }
-        else if (incidentes.getVigicoin().equals(true))
+        else if (beneficios != null && incidentes != null && incidentes.getVigicoin().equals("true"))
         {
             textView.setText("V$" + beneficios.getVigiCoin());
         }
-        else if (incidentes.getDesconto().equals(true))
+        else if (beneficios != null && incidentes != null && incidentes.getDesconto().equals("true"))
         {
             textView.setText("R$" + beneficios.getValordesconto());
         }
@@ -49,15 +49,17 @@ public class DadosIncidenteOAP extends AppCompatActivity {
         {
             textView.setText("Nenhum benefício enviado!");
         }
-        textView = findViewById(R.id.textView29);
-        textView.setText(incidentes.getData());
-        textView = findViewById(R.id.textView31);
-        textView.setText(incidentes.getLocalizacao());
-        textView = findViewById(R.id.textView33);
-        textView.setText(incidentes.getTipo());
-        textView = findViewById(R.id.textView35);
-        textView.setText(incidentes.getDescricao());
-        textView = findViewById(R.id.textView37);
-        textView.setText(incidentes.getComentário());
+        if (incidentes != null) {
+            textView = findViewById(R.id.textView29);
+            textView.setText(incidentes.getData());
+            textView = findViewById(R.id.textView31);
+            textView.setText(incidentes.getLocalizacao());
+            textView = findViewById(R.id.textView33);
+            textView.setText(incidentes.getTipo());
+            textView = findViewById(R.id.textView35);
+            textView.setText(incidentes.getDescricao());
+            textView = findViewById(R.id.textView37);
+            textView.setText(incidentes.getComentário());
+        }
     }
 }

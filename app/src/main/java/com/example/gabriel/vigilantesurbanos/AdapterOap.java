@@ -27,8 +27,10 @@ public class AdapterOap extends RecyclerView.Adapter<ViewHolderOap> {
         {
             Incidentes incidentes = new Incidentes();
             incidentes.formatar(auxiliar.getValue().toString());
-            dados.add(incidentes.getLocalizacao());
-            dadosauxiliar.add(auxiliar.getValue().toString());
+            if (incidentes != null) {
+                dados.add(incidentes.getLocalizacao());
+                dadosauxiliar.add(auxiliar.getValue().toString());
+            }
         }
     }
 

@@ -38,22 +38,24 @@ public class AdapterVigilante extends RecyclerView.Adapter<ViewHolderVigilante> 
     {
         Incidentes incidentes = new Incidentes();
         incidentes.formatar(dados.get(position));
-        viewHolderVigilante.comentarioOapvalor.setText(incidentes.getComentário());
-        viewHolderVigilante.descricaovalor.setText(incidentes.getDescricao());
-        viewHolderVigilante.tipovalor.setText(incidentes.getTipo());
-        viewHolderVigilante.localvalor.setText(incidentes.getLocalizacao());
-        viewHolderVigilante.dataenviovalor.setText(incidentes.getData());
+        if (incidentes != null) {
+            viewHolderVigilante.comentarioOapvalor.setText(incidentes.getComentário());
+            viewHolderVigilante.descricaovalor.setText(incidentes.getDescricao());
+            viewHolderVigilante.tipovalor.setText(incidentes.getTipo());
+            viewHolderVigilante.localvalor.setText(incidentes.getLocalizacao());
+            viewHolderVigilante.dataenviovalor.setText(incidentes.getData());
+        }
         SharedPreferences sharedPreferences = context.getSharedPreferences("Beneficios",0);
         Beneficios beneficios = new Beneficios();
         beneficios.formatar(sharedPreferences.getString(incidentes.getIdVigilante(),""));
-        if (incidentes.getDinheiro().equals("true")) {
+        if (incidentes != null && beneficios != null && incidentes.getDinheiro().equals("true")) {
             viewHolderVigilante.beneficiosadquiridosvalor.setText("R$" + beneficios.getDinheiro());
         }
-        else if (incidentes.getVigicoin().equals("true"))
+        else if (incidentes != null && beneficios != null && incidentes.getVigicoin().equals("true"))
         {
             viewHolderVigilante.beneficiosadquiridosvalor.setText("V$" + beneficios.getVigiCoin());
         }
-        else if (incidentes.getDesconto().equals("true"))
+        else if (incidentes != null && beneficios != null && incidentes.getDesconto().equals("true"))
         {
             viewHolderVigilante.beneficiosadquiridosvalor.setText("R$" + beneficios.getValordesconto());
         }
@@ -61,9 +63,11 @@ public class AdapterVigilante extends RecyclerView.Adapter<ViewHolderVigilante> 
         {
             viewHolderVigilante.beneficiosadquiridosvalor.setText("Incidente não avalido pelo OAP!");
         }
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference storageReference = firebaseStorage.getReference().child("incidentes/" + incidentes.getId());
-        Glide.with(context).load(storageReference).into(viewHolderVigilante.incidente);
+        if (incidentes != null) {
+            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            StorageReference storageReference = firebaseStorage.getReference().child("incidentes/" + incidentes.getId());
+            Glide.with(context).load(storageReference).into(viewHolderVigilante.incidente);
+        }
     }
 
     @Override

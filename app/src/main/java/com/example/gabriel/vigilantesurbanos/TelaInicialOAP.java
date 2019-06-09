@@ -14,12 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -45,6 +48,7 @@ public class TelaInicialOAP extends AppCompatActivity {
     RecyclerView recyclerView;
     AdapterOap adapterOap;
     boolean enviou = false;
+    boolean filtrou = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,86 @@ public class TelaInicialOAP extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+        TextView textView = findViewById(R.id.textView150);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder alertdialog = new AlertDialog.Builder(TelaInicialOAP.this);
+                TextView textView = new TextView(TelaInicialOAP.this);
+                textView.setText("FILTRAR");
+                textView.setTextColor(Color.BLACK);
+                textView.setGravity(Gravity.CENTER);
+                final EditText editText = new EditText(TelaInicialOAP.this);
+                editText.setHint("Localização");
+                editText.setHintTextColor(Color.BLACK);
+                editText.setTextColor(Color.BLACK);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.setMargins(20, 0, 30, 0);
+                LinearLayout linearLayout = new LinearLayout(TelaInicialOAP.this);
+                linearLayout.addView(textView,params);
+                linearLayout.addView(editText,params);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                alertdialog.setCancelable(true);
+                alertdialog.setView(linearLayout);
+                final SharedPreferences sharedPreferences = TelaInicialOAP.this.getSharedPreferences("Incidentes",0);
+                alertdialog.setPositiveButton("FILTRAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String localizacao = editText.getText().toString();
+                        if ((!localizacao.equals(""))) {
+                            Map<String, ?> map = sharedPreferences.getAll();
+                            Map<String, String> map1 = new HashMap<>();
+                            Map<String, String> map2 = new HashMap<>();
+                            Incidentes incidentes = new Incidentes();
+                            for (Map.Entry<String, ?> auxiliar : map.entrySet()) {
+                                incidentes.formatar(auxiliar.getValue().toString());
+                                if (incidentes.getLocalizacao() != null && (incidentes.getLocalizacao().equals(localizacao)|| incidentes.getLocalizacao().toLowerCase().equals(localizacao.toLowerCase()))|| incidentes.getLocalizacao().toUpperCase().equals(localizacao.toUpperCase())) {
+                                    map1.put(auxiliar.getKey(), incidentes.getLocalizacao());
+                                    map2.put(auxiliar.getKey(),auxiliar.getValue().toString());
+                                }
+                            }
+                            if (map1.size() > 0 && map2.size() > 0) {
+                                adapterOap.dados.clear();
+                                adapterOap.dadosauxiliar.clear();
+                                for (Map.Entry<String, String> auxiliar : map1.entrySet()) {
+                                    adapterOap.dados.add(auxiliar.getValue());
+                                }
+                                for (Map.Entry<String,String> auxiliar : map2.entrySet())
+                                {
+                                    adapterOap.dadosauxiliar.add(auxiliar.getValue());
+                                }
+                                Log.d("Teste",Integer.toString(adapterOap.dados.size()));
+                                Log.d("Teste",Integer.toString(adapterOap.dadosauxiliar.size()));
+                                filtrou = true;
+                                adapterOap.notifyDataSetChanged();
+                                recyclerView.smoothScrollToPosition(0);
+                            } else {
+                                Toast.makeText(TelaInicialOAP.this, "Nenhum incidente localizado com essa localização", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+                });
+                alertdialog.setNeutralButton("LIMPAR FILTRO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (filtrou)
+                        {
+                            adapterOap = new AdapterOap(sharedPreferences.getAll(),TelaInicialOAP.this);
+                            recyclerView.setAdapter(adapterOap);
+                            recyclerView.smoothScrollToPosition(0);
+                            filtrou = false;
+                        }
+                    }
+                });
+                alertdialog.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                alertdialog.show();
+            }
+        });
     }
 
     public void AvaliarIncidente (View view)
@@ -77,7 +161,7 @@ public class TelaInicialOAP extends AppCompatActivity {
                 toolbar.setBackgroundColor(Color.BLACK);
                 toolbar.setTitleTextColor(Color.WHITE);
                 Button button = new Button(this);
-                button.setText("ANEXAR FOTO OU VÍDEO");
+                button.setText("ANEXAR FOTO");
                 button.setTextColor(Color.WHITE);
                 button.setBackgroundTintList(ContextCompat.getColorStateList(TelaInicialOAP.this, R.color.butao));
                 final EditText editText = new EditText(this);
@@ -128,8 +212,8 @@ public class TelaInicialOAP extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent galeria = new Intent(Intent.ACTION_GET_CONTENT);
-                        galeria.setType("*/*");
-                        startActivityForResult(Intent.createChooser(galeria, "Selecione imagem ou vídeo"), 50);
+                        galeria.setType("image/*");
+                        startActivityForResult(Intent.createChooser(galeria, "Selecione imagem"), 50);
                     }
                 });
                 alertdialog.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {

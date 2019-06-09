@@ -22,20 +22,20 @@ public class TelaBeneficios extends AppCompatActivity {
         Beneficios beneficios = new Beneficios();
         beneficios.formatar(sharedPreferences.getString(Base64.getEncoder().encodeToString(firebaseUser.getEmail().getBytes()),""));
         TextView textView = findViewById(R.id.textView7);
-        textView.setText(beneficios.getDinheiro());
-        textView = findViewById(R.id.textView19);
-        textView.setText(beneficios.getVigiCoin());
-        textView = findViewById(R.id.textView20);
-        if (beneficios.getPorcentagemdesconto().contains("%")) {
-            textView.setText(beneficios.getPorcentagemdesconto());
+        if (beneficios != null) {
+            textView.setText(beneficios.getDinheiro());
+            textView = findViewById(R.id.textView19);
+            textView.setText(beneficios.getVigiCoin());
+            textView = findViewById(R.id.textView20);
+            if (beneficios.getPorcentagemdesconto().contains("%")) {
+                textView.setText(beneficios.getPorcentagemdesconto());
+            } else {
+                textView.setText(beneficios.getPorcentagemdesconto() + "%");
+            }
+            textView = findViewById(R.id.textView22);
+            textView.setText(beneficios.getTipoimposto());
+            textView = findViewById(R.id.textView24);
+            textView.setText(beneficios.getValordesconto());
         }
-        else
-        {
-            textView.setText(beneficios.getPorcentagemdesconto() + "%");
-        }
-        textView = findViewById(R.id.textView22);
-        textView.setText(beneficios.getTipoimposto());
-        textView = findViewById(R.id.textView24);
-        textView.setText(beneficios.getValordesconto());
     }
 }

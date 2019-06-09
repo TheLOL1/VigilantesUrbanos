@@ -58,17 +58,21 @@ public class Login extends AppCompatActivity {
             String usuario = sharedPreferences.getString(id,"");
             Vigilante vigilante = new Vigilante();
             vigilante.formatar(usuario);
-            if (vigilante != null && vigilante.getTipo().equals("Vigilante"))
+            if (vigilante.getTipo() != null && vigilante.getTipo().equals("Vigilante"))
             {
                 Intent intent = new Intent(this,TelaInicialVigilante.class);
                 finish();
                 startActivity(intent);
             }
-            else if (vigilante != null && vigilante.getTipo().equals("OAP"))
+            else if (vigilante.getTipo() != null && vigilante.getTipo().equals("OAP"))
             {
                 Intent intent = new Intent(this,TelaInicialOAP.class);
                 finish();
                 startActivity(intent);
+            }
+            else
+            {
+                firebaseAuth.signOut();
             }
         }
     }
@@ -100,7 +104,7 @@ public class Login extends AppCompatActivity {
                                 String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
                                 Vigilante vigilante = new Vigilante();
                                 vigilante.formatar(usuario);
-                                if (vigilante != null && vigilante.getTipo().equals("Vigilante")) {
+                                if (vigilante.getTipo() != null && vigilante.getTipo().equals("Vigilante")) {
                                     progressDialog.dismiss();
                                     finish();
                                     startActivity(intent);
@@ -109,14 +113,14 @@ public class Login extends AppCompatActivity {
                                 {
                                     progressDialog.dismiss();
                                     firebaseAuth.signOut();
-                                    Toast.makeText(Login.this,"Tipo incorreto!",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Login.this,"Tipo incorreto! ou crie uma nova conta se tiver reinstalado o app (dados são salvados localmente)",Toast.LENGTH_LONG).show();
                                 }
                             } else {
                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("VigilantesUrbanos",0);
                                 String usuario = sharedPreferences.getString(Base64.getEncoder().encodeToString(cpf.getBytes()),"");
                                 OAP oap = new OAP();
                                 oap.formatar(usuario);
-                                if (oap != null && oap.getTipo().equals("OAP")) {
+                                if (oap.getTipo() != null && oap.getTipo().equals("OAP")) {
                                     progressDialog.dismiss();
                                     finish();
                                     startActivity(intent1);
@@ -125,7 +129,7 @@ public class Login extends AppCompatActivity {
                                 {
                                     progressDialog.dismiss();
                                     firebaseAuth.signOut();
-                                    Toast.makeText(Login.this,"Tipo incorreto",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(Login.this,"Tipo incorreto ou crie uma nova conta se tiver reinstalado o app (dados são salvados localmente)",Toast.LENGTH_LONG).show();
                                 }
                             }
                         } else {
